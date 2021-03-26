@@ -64,8 +64,8 @@ typings/
 # End of https://www.gitignore.io/api/node
 
 # Project stuff
-dist
-lib
+#dist
+#lib
 coverage
 gen-docs
 .DS_Store
