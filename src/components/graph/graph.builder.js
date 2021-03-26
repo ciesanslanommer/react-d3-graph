@@ -61,6 +61,7 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
   let y2 = nodes?.[target]?.y || 0;
 
   const type = link.type || config.link.type;
+  const offset = link.offset !== undefined ? link.offset : config.link.offset || 0;
   const selfLinkDirection = link.selfLinkDirection || config.link.selfLinkDirection;
 
   let mainNodeParticipates = false;
@@ -138,6 +139,8 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
     sourceCoords,
     targetCoords,
     type,
+    config.rough,
+    offset,
     link.breakPoints,
     link.source,
     link.target,

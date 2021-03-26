@@ -5,6 +5,8 @@
  */
 import { LINE_TYPES, SELF_LINK_DIRECTION } from "./link.const";
 
+import { roughLine } from "./rough";
+import { shorterLine } from "./shorten";
 /**
  * Computes radius value for a straight line.
  * @returns {number} radius for straight line.
@@ -63,6 +65,7 @@ function getRadiusStrategy(type) {
  * {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d|d attribute mdn}
  * @param {Object} sourceCoords - link sourceCoords
  * @param {Object} targetCoords - link targetCoords
+ * @param {number} offset - link source/target position offset
  * @param {string} type - the link line type
  * @param {Array.<Object>} breakPoints - additional set of points that the link will cross
  * @param {string|number} sourceId - the source node id
@@ -75,13 +78,25 @@ function buildLinkPathDefinition(
   sourceCoords = {},
   targetCoords = {},
   type = LINE_TYPES.STRAIGHT,
+  roughOpts = {},
+  offset = 0,
   breakPoints = [],
   sourceId,
   targetId,
   selfLinkDirection = SELF_LINK_DIRECTION.TOP_RIGHT
 ) {
-  const { x: sx, y: sy } = sourceCoords;
-  const { x: tx, y: ty } = targetCoords;
+  let sx, sy, tx, ty;
+  if (offset) {
+    ({ x1: sx, y1: sy, x2: tx, y2: ty } = shorterLine(sourceCoords, targetCoords, offset, offset));
+  } else {
+    ({ x: sx, y: sy } = sourceCoords);
+    ({ x: tx, y: ty } = targetCoords);
+  }
+
+  if (type === LINE_TYPES.ROUGH) {
+    return roughLine(sx, sy, tx, ty, roughOpts);
+  }
+
   if (sourceId === targetId && sx === tx && sy === ty) {
     switch (selfLinkDirection) {
       case SELF_LINK_DIRECTION.TOP_LEFT:

@@ -345,5 +345,11 @@ export default {
     strokeDasharray: 0,
     strokeDashoffset: 0,
     strokeLinecap: "butt",
+    offset: 0,
+  },
+  rough: {
+    maxRandomnessOffset: 2,
+    roughness: 1,
+    bowing: 1,
   },
 };
